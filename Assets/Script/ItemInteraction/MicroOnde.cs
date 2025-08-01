@@ -10,12 +10,34 @@ public class MicroOnde : MonoBehaviour, IInteractable
 
     [Header("Design")]
     public bool isAnomaly;
+    public bool isTaken;
 
     public bool Interact(Interactor interactor)
     {
         if (isAnomaly) Debug.Log($"{_prompt} is Anomaly");
-        inventory.text_microonde.text = $"{_prompt}";
 
+        if (!isTaken)
+        {
+            inventory.text_microonde.text = $"{_prompt}";
+            inventory.img_microonde.color = inventory.activeColor;
+            isTaken = true;
+            inventory.HasMicroonde = true;
+
+            if (isAnomaly)
+            {
+                inventory.isAnomalyMicroonde = true;
+                Debug.Log($"{_prompt} is Anomaly");
+                inventory.img_microonde.color = inventory.anomalyColor;
+            }
+        }
+        else
+        {
+            inventory.isAnomalyMicroonde = false;
+            inventory.HasMicroonde = false;
+            isTaken = false;
+            inventory.text_microonde.text = $"empty";
+            inventory.img_microonde.color = inventory.neutralColor;
+        }
         return true;
     }
 }

@@ -9,12 +9,12 @@ using UnityEngine.InputSystem;
 public class Inventory : MonoBehaviour
 {
 
-    [Header("References")]
+    [Header("Global References")]
     private PlayerControls controls;
     private bool CheckListPressed;
     private bool BagPressed;
 
-    [Header("Items")]
+    [Header("References Items")]
     [SerializeField] private Snack_1 snack1;
     [SerializeField] private Snack_2 snack2;
     [SerializeField] private Stuff_1 stuff1;
@@ -36,9 +36,9 @@ public class Inventory : MonoBehaviour
 
     [Header("Items")]
     public bool HasSnack1 = false;
-    public bool HasSnack2= false;
+    public bool HasSnack2 = false;
     public bool HasStuff1 = false;
-    public bool HasStuff2= false;
+    public bool HasStuff2 = false;
     public bool HasCigarette = false;
     public bool HasSouvenir = false;
     public bool HasMicroonde = false;
@@ -53,12 +53,36 @@ public class Inventory : MonoBehaviour
     public bool HasFruit2 = false;
     public bool HasLegume1 = false;
     public bool HasLegume2 = false;
+    [Space]
+    public bool isAnomalySnack1 = false;
+    public bool isAnomalySnack2 = false;
+    public bool isAnomalyStuff1 = false;
+    public bool isAnomalyStuff2 = false;
+    public bool isAnomalyCigarette = false;
+    public bool isAnomalySouvenir = false;
+    public bool isAnomalyMicroonde = false;
+    public bool isAnomalyMagazine1 = false;
+    public bool isAnomalyMagazine2 = false;
+    public bool isAnomalyMagazine3 = false;
+    public bool isAnomalyDrink1 = false;
+    public bool isAnomalyDrink2 = false;
+    public bool isAnomalyDrink3 = false;
+    public bool isAnomalyDrink4 = false;
+    public bool isAnomalyFruit1 = false;
+    public bool isAnomalyFruit2 = false;
+    public bool isAnomalyLegume1 = false;
+    public bool isAnomalyLegume2 = false;
 
     [Header("Liste UI Element")]
     public GameObject CheckList;
     public GameObject Bag;
     public bool isOpenCheckList;
     public bool isOpenBag;
+    // Remplacer par les images d'état des items dans le futur
+    public Color activeColor;
+    public Color anomalyColor;
+    public Color neutralColor;
+
     [Space]
     public TMP_Text text_snack1;
     public TMP_Text text_snack2;

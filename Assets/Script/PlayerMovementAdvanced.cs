@@ -12,6 +12,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     private Vector2 moveInput;
     private bool sprintPressed;
     private Vector2 inputVector;
+    public Inventory inventory;
 
     [Header("Animation")]
     public Animator anim;
@@ -22,6 +23,8 @@ public class PlayerMovementAdvanced : MonoBehaviour
     [Header("Default")]
     public bool walkOn = false;
     public float walkSpeed = 10;
+    public bool slowOn = false;
+    public float slowSpeed = 5;
 
     [Header("Sprint")]
     public bool sprintOn = false;
@@ -180,8 +183,57 @@ public class PlayerMovementAdvanced : MonoBehaviour
             }
 
             walkOn = false;
+            slowOn = false;
             state = MovementState.sprinting;
             anim.SetFloat("speed", 1f, 0.1f, Time.deltaTime);
+        }
+        
+        // Mode - Slow
+        else if (grounded && walkSpeed > 0 && sprintSpeed > 0 && (inventory.isOpenCheckList || inventory.isOpenBag) && moveInput != Vector2.zero)
+        {
+            if (!(sprinttime <= 0))
+            {
+                SprintSlider.SetActive(true);
+                FatigueSlider.SetActive(false);
+                sprinttime += Time.deltaTime;
+            }
+
+            if (sprinttime > maxsprinttime)
+            {
+
+                SprintSlider.SetActive(false);
+                FatigueSlider.SetActive(false);
+                sprinttime = maxsprinttime;
+            }
+
+            if (sprinttime <= 0)
+            {
+                Debug.Log("fatigue");
+                SprintSlider.SetActive(false);
+                FatigueSlider.SetActive(true);
+                sprinttime = 0;
+                cd_sprinttime -= Time.deltaTime;
+                moveSpeed = walkSpeed;
+                cd_sprint = true;
+                sprintOn = false;
+            }
+
+            if (cd_sprinttime <= 0)
+            {
+                Debug.Log("recover");
+                SprintSlider.SetActive(true);
+                FatigueSlider.SetActive(false);
+                sprinttime = maxsprinttime;
+                cd_sprinttime = maxcd_sprint;
+                cd_sprint = false;
+            }
+
+            walkOn = false;
+            sprintOn = false;
+            slowOn = true;
+            state = MovementState.walking;
+            moveSpeed = slowSpeed;
+            anim.SetFloat("speed", 0.5f, 0.1f, Time.deltaTime);
         }
 
         // Mode - Walk
@@ -226,6 +278,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
             walkOn = true;
             sprintOn = false;
+            slowOn = false;
             state = MovementState.walking;
             moveSpeed = walkSpeed;
             anim.SetFloat("speed", 0.5f, 0.1f, Time.deltaTime);

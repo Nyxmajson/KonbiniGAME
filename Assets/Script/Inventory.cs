@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
     private PlayerControls controls;
     private bool CheckListPressed;
     private bool BagPressed;
+    public PlayerMovementAdvanced PMA;
 
     [Header("References Items")]
     [SerializeField] private Snack_1 snack1;
@@ -153,6 +154,9 @@ public class Inventory : MonoBehaviour
                 CheckList.SetActive(true);
                 isOpenCheckList = true;
                 CheckListPressed = false;
+                PMA.moveSpeed = PMA.slowSpeed;
+                PMA.sprintOn = false;
+                PMA.walkOn = false;
             }
             else
             {
@@ -172,6 +176,9 @@ public class Inventory : MonoBehaviour
                 Bag.SetActive(true);
                 isOpenBag = true;
                 BagPressed = false;
+                PMA.moveSpeed = PMA.slowSpeed;
+                PMA.sprintOn = false;
+                PMA.walkOn = false;
             }
             else
             {
@@ -181,6 +188,16 @@ public class Inventory : MonoBehaviour
                 BagPressed = false;
             }
         }
+
+        if (isOpenCheckList && isOpenBag) 
+        { 
+            PMA.moveSpeed = 0;
+            PMA.sprintOn = false;
+            PMA.walkOn = false;
+            PMA.slowOn = false;
+
+        }
+
     }
 
 }

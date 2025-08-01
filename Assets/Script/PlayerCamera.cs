@@ -63,8 +63,16 @@ public class PlayerCamera : MonoBehaviour
             Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
             if (inputDir != Vector3.zero)
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+            {
+                inputDir.y = 0;
+                inputDir.Normalize();
+
+                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir, Time.deltaTime * rotationSpeed);
+            }
         }
+
+        Vector3 euler = playerObj.eulerAngles;
+        playerObj.eulerAngles = new Vector3(0, euler.y, 0);
     }
 
     public void SwitchCameraStyle(CameraStyle newStyle)

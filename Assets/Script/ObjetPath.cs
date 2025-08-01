@@ -4,38 +4,82 @@ using UnityEngine;
 
 public class ObjetPath : MonoBehaviour
 {
-
     [Header("Design")]
     public bool Startpatrol;
     public Transform[] patrolPoints;
-    public int targetPoint;
-    public float speed;
-    public float TimeDecrease = 0.2f;
+    public int targetPoint = 0;
+    public int pointAnalyse;
+    public float speed = 2f;
 
-    private void Start()
+    private bool hasShownFeedback = false;
+    private bool hasNotifiedEnd = false;
+
+    private ItemData itemData;
+    private Paiement paiement;
+
+    [Header("Parent Settings")]
+    public Transform parentDuringPath;       // Parent temporaire pendant le déplacement
+    public Transform dropZone;               // Nouveau parent à la fin (peut être null)
+
+    public void Init(ItemData item, Paiement paiementRef)
     {
-        targetPoint = 0;
+        itemData = item;
+        paiement = paiementRef;
+
+        // On change de parent si défini
+        if (parentDuringPath != null)
+            transform.parent = parentDuringPath;
     }
 
     private void Update()
     {
-        if (Startpatrol)
+        if (!Startpatrol || targetPoint >= patrolPoints.Length) return;
+
+        Transform target = patrolPoints[targetPoint];
+        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, target.position) < 0.01f)
         {
-            if (transform.position == patrolPoints[targetPoint].position)
+            if (targetPoint == pointAnalyse && !hasShownFeedback)
             {
-                increaseTargetInt();
+                paiement.DisplayItemFeedback(itemData);
+                hasShownFeedback = true;
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, patrolPoints[targetPoint].position, speed * Time.deltaTime);
+            if (targetPoint == patrolPoints.Length - 1 && !hasNotifiedEnd)
+            {
+                hasNotifiedEnd = true;
+                StartCoroutine(WaitThenNotify(1f));
+            }
+
+            targetPoint++;
         }
     }
 
-    public void increaseTargetInt()
+    private IEnumerator WaitThenNotify(float delay)
     {
-        targetPoint++;
-        if (targetPoint >= patrolPoints.Length)
+        yield return new WaitForSeconds(delay);
+
+        // Change de parent final si défini
+        if (dropZone != null)
+            transform.parent = dropZone;
+        else
+            transform.parent = null; // le rend indépendant
+
+        // Ajoute un Rigidbody pour faire tomber
+        if (GetComponent<Rigidbody>() == null)
         {
-            targetPoint = 0;
+            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+            rb.mass = 1f;
         }
+
+        // Désactive IsTrigger sur tous les SphereColliders
+        foreach (SphereCollider sphere in GetComponents<SphereCollider>())
+        {
+            sphere.isTrigger = false;
+        }
+
+        // Notifie le paiement
+        paiement.NotifyItemFinished();
     }
 }

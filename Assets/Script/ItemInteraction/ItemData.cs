@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class ItemData
 {
+    public int itemID;
     public string itemName;
 
     public bool hasItem;
@@ -15,6 +16,6 @@ public class ItemData
     public ObjetPath objetPath; // Script attaché à l’objet 3D du panier
     public GameObject visualObject; // Modèle 3D à activer
 
-    public TMP_Text uiText;
-    public Image uiImage;
+    public Image inactiveImage;
+    public Image activeImage;
 }

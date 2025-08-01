@@ -12,7 +12,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     private Vector2 moveInput;
     private bool sprintPressed;
     private Vector2 inputVector;
-    public Inventory inventory;
+    public Inventory inventary;
 
     [Header("Animation")]
     public Animator anim;
@@ -189,7 +189,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
         }
         
         // Mode - Slow
-        else if (grounded && walkSpeed > 0 && sprintSpeed > 0 && (inventory.isOpenCheckList || inventory.isOpenBag) && moveInput != Vector2.zero)
+        else if (grounded && walkSpeed > 0 && sprintSpeed > 0 && (inventary.isOpenCheckList || inventary.isOpenBag) && moveInput != Vector2.zero)
         {
             if (!(sprinttime <= 0))
             {

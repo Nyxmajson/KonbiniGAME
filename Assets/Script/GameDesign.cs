@@ -9,6 +9,10 @@ public class LevelData
     public string levelName;
     [Tooltip("IDs des objets requis pour ce niveau")]
     public List<int> requiredItemIDs = new List<int>(); // IDs à remplir dans l'inspecteur
+
+    [Tooltip("Nombre d'objets anormaux dans ce niveau")]
+    [Range(0, 8)]
+    public int Anomalies = 0;
 }
 
 public class GameDesign : MonoBehaviour
@@ -21,8 +25,10 @@ public class GameDesign : MonoBehaviour
     public int currentLevel = 0;
 
     [Header("UI References")]
-    public List<TMP_Text> itemTexts;  // 8 max
-    public List<Image> itemChecks;    // 8 max (optionnel)
+    public List<TMP_Text> itemTexts; 
+    public List<Image> itemChecks; 
+    public Color collectedColor = Color.green;
+    public Color missingColor = Color.red;
 
     [Header("UI Colors")]
     public Color neutralColor;
@@ -31,6 +37,11 @@ public class GameDesign : MonoBehaviour
 
     public void StartLevel()
     {
+        foreach (var item in requiredItems)
+        {
+            Debug.Log($"{item.itemName} | Anomaly: {item.isAnomaly}");
+        }
+
         if (levels.Count == 0 || currentLevel >= levels.Count)
         {
             Debug.LogWarning("Aucun niveau valide.");
@@ -44,10 +55,16 @@ public class GameDesign : MonoBehaviour
         {
             ItemData item = inventory.items.Find(i => i.itemID == id);
             if (item != null)
+            {
+                item.isAnomaly = false; // reset au cas où
                 requiredItems.Add(item);
+            }
             else
+            {
                 Debug.LogWarning($"Item ID {id} non trouvé dans l'inventaire.");
+            }
         }
+        ApplyAnomalies(level.Anomalies);
 
         Debug.Log("Niveau lancé : " + level.levelName);
 
@@ -67,6 +84,29 @@ public class GameDesign : MonoBehaviour
                 itemTexts[i].text = "";
             }
         }
+
+        for (int i = 0; i < itemTexts.Count; i++)
+        {
+            if (i < randomizedItems.Count)
+            {
+                itemTexts[i].text = randomizedItems[i].itemName;
+
+                if (itemChecks != null && i < itemChecks.Count)
+                {
+                    itemChecks[i].sprite = randomizedItems[i].iconItem;
+                    itemChecks[i].enabled = true;
+                }
+            }
+            else
+            {
+                itemTexts[i].text = "";
+                if (itemChecks != null && i < itemChecks.Count)
+                {
+                    itemChecks[i].enabled = false;
+                }
+            }
+        }
+        UpdateChecklistUI();
     }
 
     public void CheckCollectedItems()
@@ -91,6 +131,39 @@ public class GameDesign : MonoBehaviour
         {
             Debug.LogWarning("Il manque : " + string.Join(", ", missingItems));
             LoseLevel();
+        }
+
+        UpdateChecklistUI();
+    }
+
+    public void UpdateChecklistUI()
+    {
+        for (int i = 0; i < requiredItems.Count && i < itemTexts.Count; i++)
+        {
+            bool isCollected = inventory.collectedItems.Exists(c => c.itemID == requiredItems[i].itemID);
+
+            itemTexts[i].color = isCollected ? collectedColor : missingColor;
+
+            if (itemChecks != null && i < itemChecks.Count)
+                itemChecks[i].color = isCollected ? collectedColor : missingColor;
+        }
+    }
+
+    private void ApplyAnomalies(int numberOfAnomalies)
+    {
+        if (requiredItems.Count == 0 || numberOfAnomalies <= 0) return;
+
+        numberOfAnomalies = Mathf.Min(numberOfAnomalies, requiredItems.Count);
+
+        List<int> indices = new List<int>();
+        for (int i = 0; i < requiredItems.Count; i++) indices.Add(i);
+        Shuffle(indices);
+
+        for (int i = 0; i < numberOfAnomalies; i++)
+        {
+            int index = indices[i];
+            requiredItems[index].isAnomaly = true;
+            Debug.Log($"Anomalie affectée à : {requiredItems[index].itemName}");
         }
     }
 

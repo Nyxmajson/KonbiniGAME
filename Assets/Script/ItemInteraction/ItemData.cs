@@ -9,6 +9,7 @@ public class ItemData
 {
     public int itemID;
     public string itemName;
+    public string displayName;
 
     public bool hasItem;
     public bool isAnomaly;
@@ -16,6 +17,5 @@ public class ItemData
     public ObjetPath objetPath; // Script attaché à l’objet 3D du panier
     public GameObject visualObject; // Modèle 3D à activer
 
-    public Image inactiveImage;
-    public Image activeImage;
+    public Sprite iconItem;
 }

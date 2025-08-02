@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class Inventory : MonoBehaviour
     private bool BagPressed;
     public PlayerMovementAdvanced PMA;
 
-    [Header("Items")]
+    [Header("Items")] 
+    public Transform panierParent; 
     public List<ItemData> items = new List<ItemData>();
 
     // Accès pratique :
@@ -36,6 +38,7 @@ public class Inventory : MonoBehaviour
     public bool isOpenBag;
     public List<TMP_Text> inventorySlotTexts = new List<TMP_Text>();
     public List<Image> inventorySlotImages = new List<Image>();
+    public List<Image> inventorySlotIcon= new List<Image>();
     public List<ItemData> collectedItems = new List<ItemData>();
 
     private void Awake()
@@ -120,14 +123,18 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventorySlotTexts.Count; i++)
         {
             inventorySlotTexts[i].text = "Empty";
-            inventorySlotImages[i].color = neutralColor;
+            inventorySlotImages[i].color = neutralColor; 
+            inventorySlotIcon[i].sprite = null;
+            inventorySlotIcon[i].gameObject.SetActive(false);
         }
 
         // Affiche les items collectés
         for (int i = 0; i < collectedItems.Count && i < 8; i++)
         {
             inventorySlotTexts[i].text = collectedItems[i].itemName;
-            inventorySlotImages[i].color = collectedItems[i].isAnomaly ? anomalyColor : activeColor;
+            inventorySlotImages[i].color = activeColor;
+            inventorySlotIcon[i].sprite = items[i].iconItem;
+            inventorySlotIcon[i].gameObject.SetActive(true);
         }
     }
 

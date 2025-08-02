@@ -32,7 +32,9 @@ public class Paiement : MonoBehaviour
         totalItemsToProcess = 0;
         finishedItems = 0;
 
-        foreach (var item in inventary.collectedItems)
+        List<ItemData> itemsCopy = new List<ItemData>(inventary.collectedItems);
+
+        foreach (var item in itemsCopy)
         {
             if (item.hasItem && item.visualObject != null)
             {
@@ -79,6 +81,14 @@ public class Paiement : MonoBehaviour
 
         if (finishedItems >= totalItemsToProcess)
         {
+            // On retire tous les items de l'inventaire une fois le processus terminé
+            inventary.collectedItems.Clear();
+
+            playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
+
+            // Met à jour l'affichage
+            inventary.UpdateInventoryDisplay();
+
             vendeur.TousLesObjetsSontArrivés();
         }
     }

@@ -7,15 +7,9 @@ public class ItemInteractable : MonoBehaviour, IInteractable
     public string _prompt;
     public string InteractionPrompt => _prompt;
     public Inventory inventory;
-    public string itemName; // Nom exact utilisé dans Inventory
-    public bool isAnomaly;
+    public string itemName;
 
     private bool isTaken = false;
-
-    private void Start()
-    {
-        inventory = FindObjectOfType<Inventory>(); // Tu peux aussi l’injecter si besoin
-    }
 
     public bool Interact(Interactor interactor)
     {
@@ -35,13 +29,10 @@ public class ItemInteractable : MonoBehaviour, IInteractable
             }
 
             item.hasItem = true;
-            item.isAnomaly = isAnomaly;
             isTaken = true;
 
-            // Ajout à l'inventaire du joueur
             inventory.collectedItems.Add(item);
 
-            // Mise à jour UI visible du joueur
             inventory.UpdateInventoryDisplay();
 
             Debug.Log($"{_prompt} ajouté à l'inventaire.");
@@ -50,7 +41,6 @@ public class ItemInteractable : MonoBehaviour, IInteractable
         {
             // Retirer de l’inventaire
             item.hasItem = false;
-            item.isAnomaly = false;
             isTaken = false;
 
             inventory.collectedItems.Remove(item);

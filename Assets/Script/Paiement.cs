@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86;
 
 public class Paiement : MonoBehaviour
 {
     [Header("References")]
     public Inventory inventary;
     [SerializeField] private PlayerCamera playerCamera;
+    public GameObject playerUI;
+    [SerializeField] private PlayerMovementAdvanced PMA;
+    [SerializeField] private PlayerCamera PC;
 
     [Header("UX Element")]
     public Image Caisse1Feedback;
     public Image Caisse2Feedback;
     public Color GoodItemColor;
     public Color BadItemColor;
+    public Color defaultItemColor;
 
     private int totalItemsToProcess = 0;
     private int finishedItems = 0;
-    private Vendeur1 vendeur;
+    private Vendeur vendeur;
 
-    public void SetVendeurReference(Vendeur1 v)
+    public void SetVendeurReference(Vendeur v)
     {
         vendeur = v;
     }
@@ -28,6 +33,7 @@ public class Paiement : MonoBehaviour
     public IEnumerator ActivateItemsWithDelay(float delay)
     {
         playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Camera3);
+        playerUI.SetActive(false);
 
         totalItemsToProcess = 0;
         finishedItems = 0;
@@ -42,11 +48,30 @@ public class Paiement : MonoBehaviour
 
                 item.visualObject.SetActive(true);
 
-                if (item.objetPath != null)
-                {
-                    item.objetPath.Init(item, this);
-                    item.objetPath.Startpatrol = true;
-                }
+                // Clone du visuel de l'item
+                GameObject clone = GameObject.Instantiate(item.visualObject, inventary.panierParent);
+
+                // Nettoyage des composants existants (éviter de dupliquer des références)
+                if (clone.GetComponent<ObjetPath>() != null)
+                    Destroy(clone.GetComponent<ObjetPath>());
+
+                // Copie du script ObjetPath avec nouvelle instance
+                ObjetPath pathScript = clone.AddComponent<ObjetPath>();
+
+                // Copie les valeurs depuis l’original (tu peux en rajouter si besoin)
+                ObjetPath original = item.visualObject.GetComponent<ObjetPath>();
+                pathScript.patrolPoints = original.patrolPoints;
+                pathScript.pointAnalyse = original.pointAnalyse;
+                pathScript.speed = original.speed;
+                pathScript.parentDuringPath = original.parentDuringPath;
+                pathScript.dropZone = original.dropZone;
+
+                // Init et lancement
+                pathScript.Init(item, this);
+                pathScript.Startpatrol = true;
+
+                // L’original est marqué comme plus en possession
+                item.hasItem = false;
 
                 yield return new WaitForSeconds(delay);
             }
@@ -55,7 +80,7 @@ public class Paiement : MonoBehaviour
         // Si aucun item n’est actif, on évalue directement (sécurité)
         if (totalItemsToProcess == 0)
         {
-            vendeur?.EvaluerInventaire();
+            vendeur?.AnalysePaiement();
         }
     }
 
@@ -83,13 +108,23 @@ public class Paiement : MonoBehaviour
         {
             // On retire tous les items de l'inventaire une fois le processus terminé
             inventary.collectedItems.Clear();
+            PMA.enabled = true;
+            PC.enabled = true;
+
+            Caisse1Feedback.color = defaultItemColor;
+            Caisse2Feedback.color = defaultItemColor;
 
             playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
+            playerUI.SetActive(true);
 
             // Met à jour l'affichage
             inventary.UpdateInventoryDisplay();
 
             vendeur.TousLesObjetsSontArrivés();
+        }
+        if (!inventary.HasAnyItem())
+        {
+            Debug.Log("Inventaire vidé après le paiement.");
         }
     }
 }

@@ -7,6 +7,7 @@ public class Dialogue : MonoBehaviour
 {
     [Header("References")]
     public TextMeshProUGUI textComponent;
+    [TextArea (0,5)]
     public string[] lines;
     public float textSpeed;
 

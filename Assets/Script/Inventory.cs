@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor.ShaderGraph;
@@ -10,23 +10,25 @@ using static UnityEditor.Progress;
 public class Inventory : MonoBehaviour
 {
     [Header("Global References")]
-    private PlayerControls controls;
+    public PlayerControls controls;
     private bool CheckListPressed;
     private bool BagPressed;
     public PlayerMovementAdvanced PMA;
+    public PlayerCamera PC;
+    [SerializeField] private StatuePurification statuePurification;
 
     [Header("Items")] 
     public Transform panierParent; 
     public List<ItemData> items = new List<ItemData>();
 
-    // Acc�s pratique :
+    // Accès pratique :
     public ItemData GetItemByName(string name)
     {
         return items.Find(i => i.itemName == name);
     }
 
     [Header("Liste UI Element")]
-    // Remplacer par les images d'�tat des items dans le futur
+    // Remplacer par les images d'état des items dans le futur
     public Color activeColor;
     public Color anomalyColor;
     public Color neutralColor; 
@@ -34,6 +36,7 @@ public class Inventory : MonoBehaviour
     [Header("Inventory/Checklist UI")]
     public GameObject CheckList;
     public GameObject Bag;
+    public GameObject BagStatue;
     public bool isOpenCheckList;
     public bool isOpenBag;
     public List<TMP_Text> inventorySlotTexts = new List<TMP_Text>();
@@ -64,7 +67,7 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (CheckListPressed)
+        if (CheckListPressed && !statuePurification.isPurifying)
         {
             if (!isOpenCheckList)
             {
@@ -85,7 +88,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        if (BagPressed)
+        if (BagPressed && !statuePurification.isPurifying)
         {
 
             if (!isOpenBag)
@@ -107,13 +110,11 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        if (isOpenCheckList && isOpenBag) 
-        { 
-            PMA.moveSpeed = 0;
-            PMA.sprintOn = false;
-            PMA.walkOn = false;
-            PMA.slowOn = false;
-
+        if (statuePurification.CancelPressed && statuePurification.isPurifying)
+        {
+            statuePurification.CancelPurification();
+            statuePurification.ClosePurificationInventory();
+            statuePurification.CancelPressed = false;
         }
     }
 
@@ -128,14 +129,31 @@ public class Inventory : MonoBehaviour
             inventorySlotIcon[i].gameObject.SetActive(false);
         }
 
-        // Affiche les items collect�s
+        // Affiche les items collectés
         for (int i = 0; i < collectedItems.Count && i < 8; i++)
         {
             inventorySlotTexts[i].text = collectedItems[i].itemName;
             inventorySlotImages[i].color = activeColor;
-            inventorySlotIcon[i].sprite = items[i].iconItem;
+            inventorySlotIcon[i].sprite = collectedItems[i].iconItem; //avant c'était items[i].iconItem donc si j'ai un truc à tout moment c'est ici le prob
             inventorySlotIcon[i].gameObject.SetActive(true);
+
+            var buttonGO = inventorySlotImages[i].GetComponent<Button>();
+            if (buttonGO != null)
+            {
+                var wrapper = buttonGO.GetComponent<ItemButtonPurification>();
+                if (wrapper == null)
+                    wrapper = buttonGO.gameObject.AddComponent<ItemButtonPurification>();
+
+                wrapper.itemData = collectedItems[i];
+                wrapper.statuePurification = statuePurification;
+            }
         }
+
+    }
+
+    public bool HasAnyItem()
+    {
+        return collectedItems.Count > 0;
     }
 
 }

@@ -9,8 +9,6 @@ public class ItemInteractable : MonoBehaviour, IInteractable
     public Inventory inventory;
     public string itemName;
 
-    private bool isTaken = false;
-
     public bool Interact(Interactor interactor)
     {
         var item = inventory.GetItemByName(itemName);
@@ -20,7 +18,8 @@ public class ItemInteractable : MonoBehaviour, IInteractable
             return false;
         }
 
-        if (!isTaken)
+        // On regarde directement si l'item est déjà pris (hasItem) au lieu de isTaken local
+        if (!item.hasItem)
         {
             if (inventory.collectedItems.Count >= 8)
             {
@@ -29,9 +28,8 @@ public class ItemInteractable : MonoBehaviour, IInteractable
             }
 
             item.hasItem = true;
-            isTaken = true;
-
-            inventory.collectedItems.Add(item);
+            if (!inventory.collectedItems.Contains(item))
+                inventory.collectedItems.Add(item);
 
             inventory.UpdateInventoryDisplay();
 
@@ -41,11 +39,9 @@ public class ItemInteractable : MonoBehaviour, IInteractable
         {
             // Retirer de l’inventaire
             item.hasItem = false;
-            isTaken = false;
+            if (inventory.collectedItems.Contains(item))
+                inventory.collectedItems.Remove(item);
 
-            inventory.collectedItems.Remove(item);
-
-            // Mettre à jour l’UI
             inventory.UpdateInventoryDisplay();
 
             Debug.Log($"{_prompt} retiré de l'inventaire.");

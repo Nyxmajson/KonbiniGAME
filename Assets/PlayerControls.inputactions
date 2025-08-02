@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "f301a9df-e930-4609-b47a-5ecef404f902",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -165,7 +174,7 @@
                 {
                     "name": "",
                     "id": "f07f9b13-713d-4087-a9cb-a5c660755ce2",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -187,7 +196,7 @@
                 {
                     "name": "",
                     "id": "cc98b64d-44be-4d04-847c-532a1d328a97",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -205,6 +214,28 @@
                     "action": "Bag",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03029ccd-3ccb-4319-9e7d-5cfebb906f2e",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d28c0db9-df84-4a46-a5b0-55b7132c4392",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -213,9 +244,27 @@
             "id": "6cc1f030-2fe9-4705-9980-a684cbdd1431",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Submit",
                     "type": "Button",
                     "id": "e8612a72-cb6f-4386-bfcd-7c85f230f244",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "68ad879e-90da-474c-99cc-afadcf90cbf1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SubmitPurification",
+                    "type": "Button",
+                    "id": "0f875618-370f-4dfc-9c02-453f83d4e3ca",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -226,11 +275,66 @@
                 {
                     "name": "",
                     "id": "190f034b-238e-48d9-8cd5-c3d245e3d223",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b74212f3-a0f9-40dd-b52b-72ba4467f74c",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "059db1bb-4b08-40b3-ac2f-b4b5e84d83e9",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b156298-e666-4efa-86f7-a5a25dad1d41",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "514e1fff-b7e5-40b8-adb5-d207adadbba5",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubmitPurification",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8d19bc4-9762-46b3-9d8f-87739086fdc5",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SubmitPurification",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

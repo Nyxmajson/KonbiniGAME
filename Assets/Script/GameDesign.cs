@@ -18,7 +18,8 @@ public class LevelData
 public class GameDesign : MonoBehaviour
 {
     [Header("Gameplay References")]
-    public Inventory inventory;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private doorAutomatic doorAutomatic;
 
     [Header("Level Settings")]
     public List<LevelData> levels;
@@ -37,6 +38,8 @@ public class GameDesign : MonoBehaviour
 
     public void StartLevel()
     {
+        //doorAutomatic.CloseTheDoor();
+
         foreach (var item in requiredItems)
         {
             Debug.Log($"{item.itemName} | Anomaly: {item.isAnomaly}");

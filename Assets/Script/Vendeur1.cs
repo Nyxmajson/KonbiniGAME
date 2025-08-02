@@ -35,6 +35,7 @@ public class Vendeur1 : MonoBehaviour, IInteractable
     {
         EvaluerInventaire();
     }
+
     public void EvaluerInventaire()
     {
         CompteurItem = 0;

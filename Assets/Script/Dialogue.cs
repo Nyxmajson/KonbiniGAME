@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Dialogue : MonoBehaviour
 {
+    [Header("References")]
     public TextMeshProUGUI textComponent;
     public string[] lines;
     public float textSpeed;

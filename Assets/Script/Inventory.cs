@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour
     private bool BagPressed;
     public PlayerMovementAdvanced PMA;
     public PlayerCamera PC;
+    public PlayerCamera PCcinematic;
     [SerializeField] private StatuePurification statuePurification;
 
     [Header("Items")] 
@@ -30,6 +31,7 @@ public class Inventory : MonoBehaviour
     [Header("Liste UI Element")]
     // Remplacer par les images d'état des items dans le futur
     public Color activeColor;
+    public Color hoverColor;
     public Color anomalyColor;
     public Color neutralColor; 
     
@@ -112,7 +114,6 @@ public class Inventory : MonoBehaviour
 
         if (statuePurification.CancelPressed && statuePurification.isPurifying)
         {
-            statuePurification.CancelPurification();
             statuePurification.ClosePurificationInventory();
             statuePurification.CancelPressed = false;
         }
@@ -132,8 +133,8 @@ public class Inventory : MonoBehaviour
         // Affiche les items collectés
         for (int i = 0; i < collectedItems.Count && i < 8; i++)
         {
-            inventorySlotTexts[i].text = collectedItems[i].itemName;
-            inventorySlotImages[i].color = activeColor;
+            inventorySlotTexts[i].text = collectedItems[i].displayName;
+            inventorySlotImages[i].color = hoverColor;
             inventorySlotIcon[i].sprite = collectedItems[i].iconItem; //avant c'était items[i].iconItem donc si j'ai un truc à tout moment c'est ici le prob
             inventorySlotIcon[i].gameObject.SetActive(true);
 

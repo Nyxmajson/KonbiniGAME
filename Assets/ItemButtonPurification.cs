@@ -22,7 +22,7 @@ public class ItemButtonPurification : MonoBehaviour
     {
         if (statuePurification != null && itemData != null)
         {
-            statuePurification.SelectItemToPurify(itemData);
+            statuePurification.ToggleItemSelection(itemData);
         }
         else
         {

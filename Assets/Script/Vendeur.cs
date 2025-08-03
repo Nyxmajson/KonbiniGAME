@@ -72,6 +72,8 @@ public class Vendeur : MonoBehaviour, IInteractable
             paiement.Caisse1Feedback.color = ColorStade1;
             paiement.Caisse2Feedback.color = ColorStade1;
             doorAutomatic.mustOpen = true;
+            doorAutomatic.OpenTheDoor();
+            gameDesign.EntryLight.color = ColorStade1;
             Debug.Log("Aucun item anormal");
         }
         else if (CompteurAnomaly == 1)
@@ -79,6 +81,8 @@ public class Vendeur : MonoBehaviour, IInteractable
             paiement.Caisse1Feedback.color = ColorStade2;
             paiement.Caisse2Feedback.color = ColorStade2;
             doorAutomatic.mustClose = true;
+            doorAutomatic.CloseTheDoor();
+            gameDesign.EntryLight.color = ColorStade2;
             Debug.Log("1 anomalie détectée.");
         }
         else
@@ -86,6 +90,8 @@ public class Vendeur : MonoBehaviour, IInteractable
             paiement.Caisse1Feedback.color = ColorStade3;
             paiement.Caisse2Feedback.color = ColorStade3;
             doorAutomatic.mustClose = true;
+            doorAutomatic.CloseTheDoor();
+            gameDesign.EntryLight.color = ColorStade3;
             Debug.Log("Plusieurs anomalies !");
         }
             

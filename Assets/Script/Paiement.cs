@@ -10,6 +10,7 @@ public class Paiement : MonoBehaviour
     [Header("References")]
     public Inventory inventary;
     [SerializeField] private PlayerCamera playerCamera;
+    [SerializeField] private PlayerCamera playerCameraCinematic;
     public GameObject playerUI;
     [SerializeField] private PlayerMovementAdvanced PMA;
     [SerializeField] private PlayerCamera PC;
@@ -33,6 +34,7 @@ public class Paiement : MonoBehaviour
     public IEnumerator ActivateItemsWithDelay(float delay)
     {
         playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Camera3);
+        playerCameraCinematic.SwitchCameraStyle(PlayerCamera.CameraStyle.Camera3);
         playerUI.SetActive(false);
 
         totalItemsToProcess = 0;
@@ -115,6 +117,7 @@ public class Paiement : MonoBehaviour
             Caisse2Feedback.color = defaultItemColor;
 
             playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
+            playerCameraCinematic.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
             playerUI.SetActive(true);
 
             // Met à jour l'affichage

@@ -9,15 +9,25 @@ public class StatuePurification : MonoBehaviour, IInteractable
 {
     [Header("Purification Settings")]
     public int maxPurificationStack = 4;
-    private int currentStack;
+    public int currentStack; 
+    public GameObject[] stackPreviewImages;
+    public GameObject[] purificationStackIndicators;
 
-    public GameObject[] purificationStackIndicators; // Un GameObject par stack
+    [Header("UI Hold Feedback")]
+    public Slider purificationHoldSlider; 
+    public float holdTime = 2f; // Temps requis
+    public float currentHold = 0f;
+    public bool isHoldingPurification = false;
 
     [Header("Références")]
     public Inventory inventory;
-    public GameObject confirmationPanel; // UI à afficher pour confirmer la purification
-    //public GameObject selectionCursor; // Pour savoir quel item est sélectionné
-    public GameObject bagFirstButton; // À cibler par l’EventSystem
+    public GameObject confirmationPanel;
+    public GameObject infoPanelIfSelected;
+    public GameObject selectionCursor;
+    private List<ItemData> selectedItems = new List<ItemData>();
+    private RectTransform cursorTransform;
+    public Vector3 cursorOffset = new Vector3(0, 40, 0);
+    public GameObject bagFirstButton;
     public EventSystem eventSystem;
     public bool SubmitPressed;
     public bool SubmitPurificationPressed;
@@ -28,8 +38,6 @@ public class StatuePurification : MonoBehaviour, IInteractable
     [Header("Game State")]
     public bool isDanger = false;
     public bool isTranquille = true;
-
-    private ItemData selectedItem;
 
     private PlayerControls controls;
 
@@ -48,6 +56,11 @@ public class StatuePurification : MonoBehaviour, IInteractable
 
         controls.UI.Cancel.performed += ctx => CancelPressed = true;
         controls.UI.Cancel.canceled += ctx => CancelPressed = false;
+    }
+    private void Start()
+    {
+        if (selectionCursor != null)
+            cursorTransform = selectionCursor.GetComponent<RectTransform>();
     }
 
     private void OnEnable()
@@ -97,18 +110,95 @@ public class StatuePurification : MonoBehaviour, IInteractable
 
         return true;
     }
-
-    public void SelectItemToPurify(ItemData item)
+    private void Update()
     {
-        if (!item.isAnomaly)
+        if (isPurifying && SubmitPressed)
         {
-            Debug.Log("Cet objet n’est pas une anomalie.");
-            return;
+            SubmitPressed = false;
+
+            GameObject selectedGO = eventSystem.currentSelectedGameObject;
+            if (selectedGO != null)
+            {
+                var btn = selectedGO.GetComponent<ItemButtonPurification>();
+                if (btn != null && btn.itemData != null)
+                {
+                    ToggleItemSelection(btn.itemData);
+                }
+            }
         }
 
-        selectedItem = item;
-        confirmationPanel.SetActive(true);
-        // Ici on peut déclencher une animation, une voix, etc.
+        if (isPurifying)
+        {
+            UpdateSelectionCursor();
+            UpdateSlotSelectionColors();
+        }
+
+        if (!isPurifying || !confirmationPanel.activeSelf) return;
+
+        if (SubmitPurificationPressed)
+        {
+
+            isHoldingPurification = true;
+            currentHold += Time.deltaTime;
+            purificationHoldSlider.value = currentHold / holdTime;
+
+            if (currentHold >= holdTime)
+            {
+                ConfirmPurification();
+                ResetHold();
+            }
+        }
+        else if (isHoldingPurification)
+        {
+            ResetHold(); // Annule si on relâche avant la fin
+        }
+    }
+    private void ResetHold()
+    {
+        isHoldingPurification = false;
+        currentHold = 0f;
+        purificationHoldSlider.value = 0f;
+    }
+    private void UpdateSelectionCursor()
+    {
+        GameObject selectedGO = eventSystem.currentSelectedGameObject;
+
+        if (selectedGO != null && selectedGO.GetComponent<ItemButtonPurification>() != null)
+        {
+            // Affiche le curseur et place-le
+            if (!selectionCursor.activeSelf)
+                selectionCursor.SetActive(true);
+
+            cursorTransform.position = selectedGO.transform.position + cursorOffset; // Suivi direct
+        }
+        else
+        {
+            // Rien de sélectionné ou élément non pertinent
+            selectionCursor.SetActive(false);
+        }
+    }
+
+    public void ToggleItemSelection(ItemData item)
+    {
+        if (selectedItems.Contains(item))
+        {
+            selectedItems.Remove(item);
+        }
+        else
+        {
+            if (selectedItems.Count >= currentStack)
+            {
+                Debug.Log("Pas assez de stacks pour purifier cet objet.");
+                StartCoroutine(ShakeItemSlot(item));
+                return;
+            }
+
+            selectedItems.Add(item);
+        }
+
+        infoPanelIfSelected.SetActive(selectedItems.Count > 0);
+        UpdateSlotSelectionColors();
+        UpdateStackPreviewUI();
     }
 
     public void OpenPurificationInventory()
@@ -119,7 +209,10 @@ public class StatuePurification : MonoBehaviour, IInteractable
             inventory.isOpenBag = true;
             inventory.PMA.enabled = false;
             inventory.PC.enabled = false;
+            inventory.PCcinematic.enabled = false;
             playerUI.SetActive(false);
+            inventory.PC.SwitchCameraStyle(PlayerCamera.CameraStyle.Camera2);
+            inventory.PCcinematic.SwitchCameraStyle(PlayerCamera.CameraStyle.Camera2);
 
             // Désactiver Gameplay et activer UI
             inventory.controls.Gameplay.Disable();
@@ -128,6 +221,9 @@ public class StatuePurification : MonoBehaviour, IInteractable
             // Sélection auto d’un bouton pour la manette
             eventSystem.SetSelectedGameObject(null);
             eventSystem.SetSelectedGameObject(bagFirstButton);
+
+            confirmationPanel.SetActive(true); // Toujours visible
+            infoPanelIfSelected.SetActive(false); // Masqué tant qu’aucun item sélectionné
     }
 
     public void ClosePurificationInventory()
@@ -138,37 +234,52 @@ public class StatuePurification : MonoBehaviour, IInteractable
         inventory.isOpenBag = false;
         inventory.PMA.enabled = true;
         inventory.PC.enabled = true;
-        playerUI.SetActive(true);
+        inventory.PCcinematic.enabled = true;
+        playerUI.SetActive(true); 
+        inventory.PC.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
+        inventory.PCcinematic.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
 
         // Désactiver UI et activer Gameplay
         inventory.controls.Gameplay.Enable();
         inventory.controls.UI.Disable();
+
+        infoPanelIfSelected.SetActive(false);
+        confirmationPanel.SetActive(false); 
+        selectionCursor.SetActive(false);
     }
 
     public void ConfirmPurification()
     {
-        if (currentStack <= 0)
+        if (selectedItems.Count == 0)
         {
-            Debug.Log("Plus de purifications restantes !");
-            confirmationPanel.SetActive(false);
+            Debug.Log("Aucun objet sélectionné.");
             return;
         }
 
-        if (selectedItem != null && selectedItem.isAnomaly)
+        if (selectedItems.Count > currentStack)
         {
-            selectedItem.isAnomaly = false;
-            currentStack--;
-            UpdatePurificationStackUI();
-            Debug.Log($"{selectedItem.displayName} a été purifié !");
+            Debug.Log("Pas assez de stacks pour purifier les objets sélectionnés.");
+            StartCoroutine(ShakeStackIndicators());
+            return;
         }
 
-        confirmationPanel.SetActive(false);
-    }
+        foreach (var item in selectedItems)
+        {
+            if (item.isAnomaly)
+            {
+                item.isAnomaly = false;
+                Debug.Log($"{item.displayName} a été purifié !");
+            }
+        }
 
-    public void CancelPurification()
-    {
-        selectedItem = null;
-        confirmationPanel.SetActive(false);
+        currentStack -= selectedItems.Count;
+
+        selectedItems.Clear();
+        UpdatePurificationStackUI();
+        UpdateSlotSelectionColors();
+        UpdateStackPreviewUI();
+
+        //confirmationPanel.SetActive(false);
     }
 
     private void UpdatePurificationStackUI()
@@ -178,4 +289,109 @@ public class StatuePurification : MonoBehaviour, IInteractable
             purificationStackIndicators[i].SetActive(i < currentStack);
         }
     }
+
+    private void UpdateSlotSelectionColors()
+    {
+        GameObject selectedGO = eventSystem.currentSelectedGameObject;
+
+        for (int i = 0; i < inventory.inventorySlotImages.Count; i++)
+        {
+            var image = inventory.inventorySlotImages[i];
+            var icon = inventory.inventorySlotIcon[i];
+            var buttonWrapper = icon.GetComponent<ItemButtonPurification>();
+            if (buttonWrapper == null) continue;
+
+            var item = buttonWrapper.itemData;
+            bool isHovered = selectedGO == image.gameObject || selectedGO == icon.gameObject;
+            bool isSelected = selectedItems.Contains(item);
+
+            if (isSelected)
+                image.color = inventory.activeColor;
+            else if (isHovered)
+                image.color = inventory.hoverColor;
+            else
+                image.color = inventory.neutralColor;
+        }
+    }
+
+    private void UpdateStackPreviewUI()
+    {
+        for (int i = 0; i < purificationStackIndicators.Length; i++)
+        {
+            bool usedForPreview = i < selectedItems.Count;
+            bool usedForReal = i >= currentStack;
+
+            if (usedForPreview && i < currentStack)
+            {
+                stackPreviewImages[i].SetActive(true); // Grisé ou autre
+                purificationStackIndicators[i].SetActive(false); // Cache stack "active"
+            }
+            else
+            {
+                stackPreviewImages[i].SetActive(false);
+                purificationStackIndicators[i].SetActive(i < currentStack);
+            }
+        }
+    }
+
+    private IEnumerator ShakeStackIndicators()
+    {
+        float elapsed = 0f;
+        float duration = 0.3f;
+        float strength = 8f;
+
+        Vector3[] originalPositions = new Vector3[purificationStackIndicators.Length];
+
+        for (int i = 0; i < purificationStackIndicators.Length; i++)
+        {
+            if (purificationStackIndicators[i].activeSelf)
+                originalPositions[i] = purificationStackIndicators[i].transform.localPosition;
+        }
+
+        while (elapsed < duration)
+        {
+            float offsetX = Mathf.Sin(elapsed * 40f) * strength;
+
+            for (int i = 0; i < purificationStackIndicators.Length; i++)
+            {
+                if (purificationStackIndicators[i].activeSelf)
+                {
+                    purificationStackIndicators[i].transform.localPosition = originalPositions[i] + new Vector3(offsetX, 0, 0);
+                }
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        for (int i = 0; i < purificationStackIndicators.Length; i++)
+        {
+            if (purificationStackIndicators[i].activeSelf)
+                purificationStackIndicators[i].transform.localPosition = originalPositions[i];
+        }
+    }
+
+    private IEnumerator ShakeItemSlot(ItemData item)
+    {
+        int index = inventory.collectedItems.IndexOf(item);
+        if (index < 0 || index >= inventory.inventorySlotImages.Count)
+            yield break;
+
+        var slot = inventory.inventorySlotImages[index];
+        var originalPos = slot.transform.localPosition;
+        float elapsed = 0f;
+        float duration = 0.3f;
+        float strength = 8f;
+
+        while (elapsed < duration)
+        {
+            float offsetX = Mathf.Sin(elapsed * 40f) * strength;
+            slot.transform.localPosition = originalPos + new Vector3(offsetX, 0, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        slot.transform.localPosition = originalPos;
+    }
+
 }

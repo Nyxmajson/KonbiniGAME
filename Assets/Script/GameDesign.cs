@@ -25,20 +25,20 @@ public class GameDesign : MonoBehaviour
     public List<LevelData> levels;
     public int currentLevel = 0;
 
-    [Header("UI References")]
+    [Header("UI-UX References")]
     public List<TMP_Text> itemTexts; 
     public List<Image> itemChecks; 
     public Color collectedColor = Color.green;
     public Color missingColor = Color.red;
+    public Light EntryLight;
 
     [Header("UI Colors")]
-    public Color neutralColor;
+    public Color textColor;
 
     private List<ItemData> requiredItems = new List<ItemData>();
 
     public void StartLevel()
     {
-        //doorAutomatic.CloseTheDoor();
 
         foreach (var item in requiredItems)
         {
@@ -79,8 +79,8 @@ public class GameDesign : MonoBehaviour
         {
             if (i < randomizedItems.Count)
             {
-                itemTexts[i].text = randomizedItems[i].itemName;
-                itemTexts[i].color = neutralColor;
+                itemTexts[i].text = randomizedItems[i].displayName;
+                itemTexts[i].color = textColor;
             }
             else
             {
@@ -92,7 +92,7 @@ public class GameDesign : MonoBehaviour
         {
             if (i < randomizedItems.Count)
             {
-                itemTexts[i].text = randomizedItems[i].itemName;
+                itemTexts[i].text = randomizedItems[i].displayName;
 
                 if (itemChecks != null && i < itemChecks.Count)
                 {

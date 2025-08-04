@@ -15,7 +15,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     public Inventory inventary;
 
     [Header("Animation")]
-    //public Animator anim;
+    public Animator anim;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -62,9 +62,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     {
         idle,
         walking,
-        sprinting,
-        crouching,
-        air
+        sprinting
     }
     private void Awake()
     {
@@ -99,8 +97,6 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
         sprinttime = maxsprinttime;
         cd_sprinttime = maxcd_sprint;
-
-        //anim = GetComponentInChildren<Animator>();
 
         capsuleCollider.center = new Vector3(0, 0.095f, 0);
     }
@@ -182,10 +178,11 @@ public class PlayerMovementAdvanced : MonoBehaviour
                 if (cd_sprinttime > maxcd_sprint) cd_sprinttime = maxcd_sprint;
             }
 
+            sprintOn = true;
             walkOn = false;
             slowOn = false;
             state = MovementState.sprinting;
-            //anim.SetFloat("speed", 1f, 0.1f, Time.deltaTime);
+            anim.SetFloat("speed", 1.5f, 0.1f, Time.deltaTime);
         }
         
         // Mode - Slow
@@ -233,7 +230,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
             slowOn = true;
             state = MovementState.walking;
             moveSpeed = slowSpeed;
-            //anim.SetFloat("speed", 0.5f, 0.1f, Time.deltaTime);
+            anim.SetFloat("speed", 0.5f, 0.1f, Time.deltaTime);
         }
 
         // Mode - Walk
@@ -281,7 +278,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
             slowOn = false;
             state = MovementState.walking;
             moveSpeed = walkSpeed;
-            //anim.SetFloat("speed", 0.5f, 0.1f, Time.deltaTime);
+            anim.SetFloat("speed", 1f, 0.1f, Time.deltaTime);
         }
 
         // Mode - Idle
@@ -321,6 +318,13 @@ public class PlayerMovementAdvanced : MonoBehaviour
                 cd_sprinttime = maxcd_sprint;
                 cd_sprint = false;
             }
+
+            walkOn = false;
+            sprintOn = false;
+            slowOn = false;
+            state = MovementState.idle;
+            moveSpeed = 0;
+            anim.SetFloat("speed", 0f, 0.1f, Time.deltaTime);
         }
     }
 

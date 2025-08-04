@@ -15,16 +15,17 @@ public class Paiement : MonoBehaviour
     [SerializeField] private PlayerMovementAdvanced PMA;
     [SerializeField] private PlayerCamera PC;
 
-    [Header("UX Element")]
+    [Header("Ecran Caisse UX")]
     public Image Caisse1Feedback;
     public Image Caisse2Feedback;
     public Color GoodItemColor;
     public Color BadItemColor;
     public Color defaultItemColor;
 
-    private int totalItemsToProcess = 0;
-    private int finishedItems = 0;
-    private Vendeur vendeur;
+    [Header("Paiement Logs")]
+    [SerializeField] private int totalItemsToProcess = 0;
+    [SerializeField] private int finishedItems = 0;
+    [SerializeField] private Vendeur vendeur;
 
     public void SetVendeurReference(Vendeur v)
     {

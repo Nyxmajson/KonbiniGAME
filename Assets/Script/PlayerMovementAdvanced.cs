@@ -97,8 +97,6 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
         sprinttime = maxsprinttime;
         cd_sprinttime = maxcd_sprint;
-
-        capsuleCollider.center = new Vector3(0, 0.095f, 0);
     }
 
     public void Update()
@@ -107,7 +105,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
         inputVector = controls.Gameplay.Move.ReadValue<Vector2>();
 
         // ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, new Vector3(0,-5,0), playerHeight * 0.5f, whatIsGround);
 
         MyInput();
         SpeedControl();

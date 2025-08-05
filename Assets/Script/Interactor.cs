@@ -12,7 +12,9 @@ public class Interactor : MonoBehaviour
 
     [Header("Interactor References")]
     [SerializeField] private Transform _interactionPoint;
-    public float _interactionPointRadius = 0.5f;
+    public float _interactionPointRadius = 0.5f; 
+    [SerializeField] private float _capsuleHeight = 1.8f;
+    [SerializeField] private float _capsuleRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
     [SerializeField] public InteractionPromptUI _interactionPromptUI;
     private readonly Collider[] _colliders = new Collider[3];
@@ -42,7 +44,10 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
-        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
+        Vector3 halfHeight = Vector3.up * (_capsuleHeight / 2f - _capsuleRadius);
+        Vector3 point1 = _interactionPoint.position + halfHeight;
+        Vector3 point2 = _interactionPoint.position - halfHeight; 
+        _numFound = Physics.OverlapCapsuleNonAlloc(point1, point2, _capsuleRadius, _colliders, _interactableMask);
 
         if (_numFound > 0)
         {
@@ -72,7 +77,19 @@ public class Interactor : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
+
+        Vector3 halfHeight = Vector3.up * (_capsuleHeight / 2f - _capsuleRadius);
+        Vector3 point1 = _interactionPoint.position + halfHeight;
+        Vector3 point2 = _interactionPoint.position - halfHeight;
+
+        Gizmos.DrawWireSphere(point1, _capsuleRadius);
+        Gizmos.DrawWireSphere(point2, _capsuleRadius);
+        Gizmos.DrawLine(point1 + Vector3.forward * _capsuleRadius, point2 + Vector3.forward * _capsuleRadius);
+        Gizmos.DrawLine(point1 - Vector3.forward * _capsuleRadius, point2 - Vector3.forward * _capsuleRadius);
+        Gizmos.DrawLine(point1 + Vector3.right * _capsuleRadius, point2 + Vector3.right * _capsuleRadius);
+        Gizmos.DrawLine(point1 - Vector3.right * _capsuleRadius, point2 - Vector3.right * _capsuleRadius);
+#endif
     }
 }

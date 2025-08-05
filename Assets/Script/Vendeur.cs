@@ -70,7 +70,7 @@ public class Vendeur : MonoBehaviour, IInteractable
         if (CompteurAnomaly == 0)
         {
             paiement.Caisse1Feedback.color = ColorStade1;
-            paiement.Caisse2Feedback.color = ColorStade1;
+            //paiement.Caisse2Feedback.color = ColorStade1;
             doorAutomatic.mustOpen = true;
             doorAutomatic.OpenTheDoor();
             gameDesign.EntryLight.color = ColorStade1;
@@ -79,7 +79,7 @@ public class Vendeur : MonoBehaviour, IInteractable
         else if (CompteurAnomaly == 1)
         {
             paiement.Caisse1Feedback.color = ColorStade2;
-            paiement.Caisse2Feedback.color = ColorStade2;
+            //paiement.Caisse2Feedback.color = ColorStade2;
             doorAutomatic.mustClose = true;
             doorAutomatic.CloseTheDoor();
             gameDesign.EntryLight.color = ColorStade2;
@@ -88,7 +88,7 @@ public class Vendeur : MonoBehaviour, IInteractable
         else
         {
             paiement.Caisse1Feedback.color = ColorStade3;
-            paiement.Caisse2Feedback.color = ColorStade3;
+            //paiement.Caisse2Feedback.color = ColorStade3;
             doorAutomatic.mustClose = true;
             doorAutomatic.CloseTheDoor();
             gameDesign.EntryLight.color = ColorStade3;

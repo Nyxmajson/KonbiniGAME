@@ -17,7 +17,7 @@ public class Paiement : MonoBehaviour
 
     [Header("Ecran Caisse UX")]
     public Image Caisse1Feedback;
-    public Image Caisse2Feedback;
+   // public Image Caisse2Feedback;
     public Color GoodItemColor;
     public Color BadItemColor;
     public Color defaultItemColor;
@@ -94,12 +94,12 @@ public class Paiement : MonoBehaviour
         if (item.isAnomaly)
         {
             Caisse1Feedback.color = BadItemColor;
-            Caisse2Feedback.color = BadItemColor;
+            //Caisse2Feedback.color = BadItemColor;
         }
         else
         {
             Caisse1Feedback.color = GoodItemColor;
-            Caisse2Feedback.color = GoodItemColor;
+            //Caisse2Feedback.color = GoodItemColor;
         }
     }
 
@@ -115,7 +115,7 @@ public class Paiement : MonoBehaviour
             PC.enabled = true;
 
             Caisse1Feedback.color = defaultItemColor;
-            Caisse2Feedback.color = defaultItemColor;
+            //Caisse2Feedback.color = defaultItemColor;
 
             playerCamera.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);
             playerCameraCinematic.SwitchCameraStyle(PlayerCamera.CameraStyle.Basic);

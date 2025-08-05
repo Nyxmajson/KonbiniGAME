@@ -10,6 +10,7 @@ public class HideAndShow : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        RoofKonbini.SetActive(true); 
         foreach (var renderer in targetRenderers)
         {
             renderer.shadowCastingMode = ShadowCastingMode.ShadowsOnly;

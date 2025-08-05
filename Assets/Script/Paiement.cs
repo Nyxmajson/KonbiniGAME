@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 using static Unity.Burst.Intrinsics.X86;
 
@@ -89,15 +90,19 @@ public class Paiement : MonoBehaviour
 
     public void DisplayItemFeedback(ItemData item)
     {
+        // C'EST ICI que je fais tous mes feedback pour les animations en CAISSE de si c'est une anomalie ou pas
         if (item == null) return;
 
         if (item.isAnomaly)
         {
+            vendeur.CompteurAnomaly++;
+            vendeur.CompteurItem++;
             Caisse1Feedback.color = BadItemColor;
             //Caisse2Feedback.color = BadItemColor;
         }
         else
         {
+            vendeur.CompteurItem++;
             Caisse1Feedback.color = GoodItemColor;
             //Caisse2Feedback.color = GoodItemColor;
         }

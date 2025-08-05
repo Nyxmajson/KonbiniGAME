@@ -58,8 +58,6 @@ public class Vendeur : MonoBehaviour, IInteractable
 
     public void AnalysePaiement()
     {
-        CompteurItem = 0;
-        CompteurAnomaly = 0;
 
         foreach (var item in paiement.inventary.collectedItems)
         {
@@ -69,6 +67,7 @@ public class Vendeur : MonoBehaviour, IInteractable
 
         if (CompteurAnomaly == 0)
         {
+            CompteurAnomaly = 0;
             paiement.Caisse1Feedback.color = ColorStade1;
             //paiement.Caisse2Feedback.color = ColorStade1;
             doorAutomatic.mustOpen = true;
@@ -78,6 +77,7 @@ public class Vendeur : MonoBehaviour, IInteractable
         }
         else if (CompteurAnomaly == 1)
         {
+            CompteurAnomaly = 0;
             paiement.Caisse1Feedback.color = ColorStade2;
             //paiement.Caisse2Feedback.color = ColorStade2;
             doorAutomatic.mustClose = true;
@@ -87,6 +87,7 @@ public class Vendeur : MonoBehaviour, IInteractable
         }
         else
         {
+            CompteurAnomaly = 0;
             paiement.Caisse1Feedback.color = ColorStade3;
             //paiement.Caisse2Feedback.color = ColorStade3;
             doorAutomatic.mustClose = true;

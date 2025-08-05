@@ -16,6 +16,7 @@ public class ObjetPath : MonoBehaviour
 
     private ItemData itemData;
     private Paiement paiement;
+    private Vendeur vendeur;
 
     [Header("Parent Settings")]
     public Transform parentDuringPath;       // Parent temporaire pendant le déplacement

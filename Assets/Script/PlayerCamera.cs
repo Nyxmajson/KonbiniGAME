@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -25,6 +26,19 @@ public class PlayerCamera : MonoBehaviour
     [Header("R�f�rence � la Cinemachine FreeLook")]
     public CinemachineFreeLook freeLookCam;
 
+    private Vector2 lookInput;
+    public bool leftClickHeld;
+    public bool rightClickHeld; 
+    
+    [Header("Camera Rotation Speeds")]
+    [Range(0f, 1f)] public float cameraSensitivityNormalized = 0.5f; // valeur entre 0 et 1
+
+    // Valeurs max réelles utilisées par Cinemachine
+    [SerializeField] private float maxCameraSpeedX = 200f;
+    [SerializeField] private float maxCameraSpeedY = 5f;
+    private float cameraSpeedX;
+    private float cameraSpeedY;
+
     public enum CameraStyle
     {
         Basic,
@@ -43,11 +57,32 @@ public class PlayerCamera : MonoBehaviour
     private void Awake()
     {
         controls = new PlayerControls();
+
+        // Lecture du joystick droit ou souris
+        controls.Gameplay.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        controls.Gameplay.Look.canceled += ctx => lookInput = Vector2.zero;
+
+        // Lecture des clics souris
+        controls.Gameplay.LeftClick.performed += ctx => leftClickHeld = true;
+        controls.Gameplay.LeftClick.canceled += ctx => leftClickHeld = false;
+
+        controls.Gameplay.RightClick.performed += ctx => rightClickHeld = true;
+        controls.Gameplay.RightClick.canceled += ctx => rightClickHeld = false;
+    }
+
+    private void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Gameplay.Disable();
+        controls.UI.Disable();
     }
 
     private void Update()
     {
-
 
         // rotate orientation
         Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
@@ -70,9 +105,11 @@ public class PlayerCamera : MonoBehaviour
             }
         }
 
+        // Gestion caméra
         Vector3 euler = playerObj.eulerAngles;
         playerObj.eulerAngles = new Vector3(0, euler.y, 0);
     }
+
 
     public void SwitchCameraStyle(CameraStyle newStyle)
     {

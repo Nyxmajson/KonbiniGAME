@@ -4975,8 +4975,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4074043, y: 0.27188882, z: -0.12845407, w: 0.8623212}
-  m_LocalPosition: {x: 0.8340764, y: 16.46, z: -17.546637}
+  m_LocalRotation: {x: 0.3817621, y: 0.3484842, z: -0.15813105, w: 0.84131515}
+  m_LocalPosition: {x: -1.3794956, y: 16.16, z: -16.469494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6004,6 +6004,11 @@ MonoBehaviour:
   Camera2Cam: {fileID: 914677677}
   Camera3Cam: {fileID: 1913933176}
   freeLookCam: {fileID: 427319875}
+  leftClickHeld: 0
+  rightClickHeld: 0
+  cameraSensitivityNormalized: 0.5
+  maxCameraSpeedX: 500
+  maxCameraSpeedY: 5
 --- !u!114 &427319875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6244,6 +6249,11 @@ MonoBehaviour:
   Camera2Cam: {fileID: 914677677}
   Camera3Cam: {fileID: 1913933176}
   freeLookCam: {fileID: 433710821}
+  leftClickHeld: 0
+  rightClickHeld: 0
+  cameraSensitivityNormalized: 0.5
+  maxCameraSpeedX: 500
+  maxCameraSpeedY: 5
 --- !u!114 &433710821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6964,7 +6974,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470240576}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.000000029802322, z: -0.000000029802322, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12871,7 +12881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884821300}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.000000029802322, z: -0.000000029802322, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13620,6 +13630,11 @@ MonoBehaviour:
   Camera2Cam: {fileID: 914677677}
   Camera3Cam: {fileID: 1913933176}
   freeLookCam: {fileID: 914677679}
+  leftClickHeld: 0
+  rightClickHeld: 0
+  cameraSensitivityNormalized: 0.5
+  maxCameraSpeedX: 500
+  maxCameraSpeedY: 5
 --- !u!114 &914677679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16048,7 +16063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 16.3, z: -13.4}
+  m_FollowOffset: {x: 0, y: 16, z: -14}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -16068,7 +16083,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 35
+    Value: 45
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -20781,7 +20796,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 35
+    Value: 45
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -20811,8 +20826,8 @@ MonoBehaviour:
   m_BindingMode: 4
   m_SplineCurvature: 0.2
   m_Orbits:
-  - m_Height: 16.3
-    m_Radius: 13.4
+  - m_Height: 16
+    m_Radius: 14
   - m_Height: 16
     m_Radius: 14
   - m_Height: 16
@@ -20845,6 +20860,11 @@ MonoBehaviour:
   Camera2Cam: {fileID: 914677677}
   Camera3Cam: {fileID: 1913933176}
   freeLookCam: {fileID: 1413460849}
+  leftClickHeld: 0
+  rightClickHeld: 0
+  cameraSensitivityNormalized: 0.5
+  maxCameraSpeedX: 300
+  maxCameraSpeedY: 5
 --- !u!1 &1427666614
 GameObject:
   m_ObjectHideFlags: 0
@@ -21100,7 +21120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448168245}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.000000029802322, z: -0.000000029802322, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24771,7 +24791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 16.3, z: -13.4}
+  m_FollowOffset: {x: 0, y: 16, z: -14}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -24791,7 +24811,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 35
+    Value: 45
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -27005,6 +27025,11 @@ MonoBehaviour:
   Camera2Cam: {fileID: 914677677}
   Camera3Cam: {fileID: 1913933176}
   freeLookCam: {fileID: 1913933179}
+  leftClickHeld: 0
+  rightClickHeld: 0
+  cameraSensitivityNormalized: 0.5
+  maxCameraSpeedX: 500
+  maxCameraSpeedY: 5
 --- !u!114 &1913933179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28904,7 +28929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 16.3, z: -13.4}
+  m_FollowOffset: {x: 0, y: 16, z: -14}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -28924,7 +28949,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 35
+    Value: 45
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1

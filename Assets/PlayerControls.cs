@@ -80,6 +80,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""21c67c05-d243-4460-ad4d-abff577f8ea6"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb992834-0310-44de-b227-b60ec200ac9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1489a5f-a6a5-4954-a32c-61e39e1a3cf0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -163,11 +190,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a111fb72-e487-47cd-bdf0-a1e80be6f953"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17a76d57-13d1-49d7-98d3-442659249d95"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -196,7 +234,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f07f9b13-713d-4087-a9cb-a5c660755ce2"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -218,7 +256,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cc98b64d-44be-4d04-847c-532a1d328a97"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -256,6 +294,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77ba1516-6b1c-476b-8a0a-0db98ee163a0"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab006cac-5d08-47f0-a9bf-d1d198171122"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""081903e6-79f4-4cde-a8b9-4622ead983a0"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07747c6d-3e14-4642-8012-4f66bdc625c2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -296,17 +378,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""190f034b-238e-48d9-8cd5-c3d245e3d223"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""b74212f3-a0f9-40dd-b52b-72ba4467f74c"",
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
@@ -329,6 +400,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""34dd12fb-c99b-4f74-be0a-10388894be9f"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8b156298-e666-4efa-86f7-a5a25dad1d41"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
@@ -340,8 +422,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f305c9de-5c40-4850-8aa6-153cd3e26749"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""514e1fff-b7e5-40b8-adb5-d207adadbba5"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -373,6 +466,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Gameplay_Checklist = m_Gameplay.FindAction("Checklist", throwIfNotFound: true);
         m_Gameplay_Bag = m_Gameplay.FindAction("Bag", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+        m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
+        m_Gameplay_RightClick = m_Gameplay.FindAction("RightClick", throwIfNotFound: true);
+        m_Gameplay_LeftClick = m_Gameplay.FindAction("LeftClick", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
@@ -445,6 +541,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Checklist;
     private readonly InputAction m_Gameplay_Bag;
     private readonly InputAction m_Gameplay_Pause;
+    private readonly InputAction m_Gameplay_Look;
+    private readonly InputAction m_Gameplay_RightClick;
+    private readonly InputAction m_Gameplay_LeftClick;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -455,6 +554,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Checklist => m_Wrapper.m_Gameplay_Checklist;
         public InputAction @Bag => m_Wrapper.m_Gameplay_Bag;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+        public InputAction @Look => m_Wrapper.m_Gameplay_Look;
+        public InputAction @RightClick => m_Wrapper.m_Gameplay_RightClick;
+        public InputAction @LeftClick => m_Wrapper.m_Gameplay_LeftClick;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -482,6 +584,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -504,6 +615,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -591,6 +711,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnChecklist(InputAction.CallbackContext context);
         void OnBag(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
